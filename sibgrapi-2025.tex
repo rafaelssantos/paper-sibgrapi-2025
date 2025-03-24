@@ -61,6 +61,7 @@
 % The documentation is contained in the cite.sty file itself.
 
 
+%\usepackage{svg}
 
 
 
@@ -122,15 +123,18 @@
 % does. amsmath.sty is already installed on most LaTeX systems. The latest
 % version and documentation can be obtained at:
 % http://www.ctan.org/pkg/amsmath
-\usepackage{amsthm}
+\usepackage{amsmath,amssymb,amsfonts}
 \newtheorem{definition}{Definition}
 
 
+\usepackage{tabularx, booktabs}
+
+\usepackage[english, englishkw,  ruled, linesnumbered]{algorithm2e}
 
 
 % *** SPECIALIZED LIST PACKAGES ***
 %
-\usepackage{algorithmic}
+%\usepackage{algorithmic}
 % algorithmic.sty was written by Peter Williams and Rogerio Brito.
 % This package provides an algorithmic environment fo describing algorithms.
 % You can use the algorithmic environment in-text or within a figure
@@ -285,7 +289,7 @@
 % not capitalized unless they are the first or last word of the title.
 % Linebreaks \\ can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
-\title{Example of IEEEtran.cls: \\ adapted for SIBGRAPI 2024}
+\title{An unsupervised method based on clustering and two-level dimensionality reduction for transfer function definition and design in Direct Volume Rendering}
 
 
 % author names and affiliations
@@ -348,7 +352,7 @@ Fax: (888) 555--1212}}
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
-The abstract goes here.
+Transfer function (TF) is one of the most researched topics in volume visualization. In the traditional Direct Volume Rendering (DVR) pipeline, a TF undertakes several roles, principally encompassing material classification and translating data into visual properties. A good TF is capable of generating precise classifications. It is widely known that this capability depends on the data domain. Multidimensional TFs have shown promise for improving classification power. However, the increase in the number of input attributes does not guarantee, by itself, better results. The identification of input data attributes that optimize classification accuracy typically demands user expertise. Moreover, designing a TF to highlight desired volume details is a complex task, particularly with multidimensional inputs. To address these challenges, we propose an unsupervised volume classification method that aids both TF definition and design, integrating feature selection, feature extraction, clustering, and pivot-based indexing. The method facilitates both the TF definition and design processes. The results of our work include an attribute similarity guide to TF definition, an easy-to-use volume exploration scheme based on an initial TF specification, a semi-automated data classification, and a modified 2D scatter plot view interface.
 \end{abstract}
 
 % no keywords
@@ -360,10 +364,19 @@ The abstract goes here.
 % creates the second title. It will be ignored for other modes.
 \IEEEpeerreviewmaketitle
 
+\input{sections/introduction}
+\input{sections/related-works}
+\input{sections/method}
+\input{sections/volume-exploration}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/conclusions}
+\input{sections/acknowledgements}
+
 
 
 \section{Introduction}
-SIBGRAPI 2024 \cite{Sibgrapi2024}.
+SIBGRAPI 2025 \cite{Sibgrapi2024}.
 
 \subsection{Subsection Heading Here}
 Subsection text here.
@@ -505,7 +518,7 @@ The authors would like to thank...
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
 \bibliographystyle{IEEEtran}
 % argument is your BibTeX string definitions and bibliography database(s)
-\bibliography{example}
+\bibliography{refs}
 %
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references

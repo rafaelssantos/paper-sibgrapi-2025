@@ -1,0 +1,29 @@
+\section{Related works}
+\label{sect:related-works}
+Various aspects concerning TFs have been thoroughly discussed in the literature~\cite{ljung2016}. Our review focuses on methods that support user interaction in multidimensional design, especially those that apply machine learning, dimensionality reduction, and information visualization views.
+
+\subsection{Multidimensional data}
+\label{subsect:multidimensional-data}
+
+A typical multidimensional TF consists of multivariate or derived input data. Multivariate attributes are obtained from the volume acquisition process, while derived attributes are usually calculated from material density data. The gradient stands out as the most commonly utilized derived attribute, with other examples including curvature ~\cite{hladuvka2000, kindlmann2003}, size~\cite{correa2008, wesarg2009}, distance~\cite{tappenbeck2006}, texture~\cite{caban2008} and statistical measures~\cite{haidacher2010}. 
+
+Selecting an optimal subset of attributes to maximize material classification accuracy is complex. \cite{arens2010} contend that there is no universally suitable TF for all cases. Considering all available attributes is impractical, as it may escalate computational costs and introduce noise, thereby diminishing classification results. This classical problem is known as  ``the curse of dimensionality''. Dimensionality reduction is the most common attempt to address this challenge. Several approaches have resorted to such techniques to deal with multidimensional TFs~\cite{cai2017, abbasloo2016, gao2022, moura2007, zhao2010}.
+
+\subsection{Transfer function design}
+\label{subsect:transfer-function-design}
+
+\subsubsection{2D transfer function design}
+Histograms usually serve as the user interface for 2D TFs~\cite{kniss2002}. These interfaces generally represent the intensity-gradient magnitude and the low-high histograms. Various methods for automating histogram-based TF design have been proposed. \cite{roettger2005} group spatially connected regions and associated gradient values with space coordinates to classify the datasets. Most approaches have combined histograms with clustering techniques, such as affinity propagation~\cite{zhang2016}, hierarchical clustering~\cite{sereda2006}, and the iterative self-organizing data analysis technique~\cite{tzeng2004}. 
+
+\subsubsection{Multidimensional transfer function design}
+
+
+Approaches to designing multidimensional TFs normally conform to two primary strategies. The first entails furnishing an interface that enables the manipulation of all data attributes. One example of this interface type is the parallel coordinate plot (PCP). The second strategy involves leveraging dimensionality reduction techniques, such as those based on Multidimensional Scaling (MDS) and Principal Component Analysis (PCA).
+
+\cite{tory2005} employed PCP in their exploration scheme, integrating viewer parameters and TF specifications into the design interface. \cite{zhao2010} uses the same strategy with a local liner embedding technique for dimensionality reduction. Similarly, \cite{guo2011} proposed a hybrid interface design comprising PCP and a scatter plot generated via MDS.
+
+\cite{moura2007} utilized a self-organizing map (SOM) and a radial-based function for TF design. SOM conducts dimensionality reduction through unsupervised learning, resulting in a map where neighborhood regions represent similar voxels. The user interaction involves drawing widgets in these regions. Likewise, \cite{khan2015} utilized a spherical SOM, enabling user interaction with the map lattice. \cite{wang2011} constructed a volume exploration space with subtree structures, using hierarchical clustering in a modified dendrogram. Afterward, \cite{cai2017} revisited these methods, augmenting the SOM result with a normalization cut step. The exploration space transforms into a cell map, with each region representing volume information associated with meaningful volume structures. Our approach shares similarities with the work of \cite{cai2017}, but it utilizes an MDS-based technique and a density clustering algorithm to automate material classification, thereby generating a modified scatter plot view.
+
+\cite{tzeng2005} proposed one of the earliest strategies employing supervised learning, implementing neural networks and support vector machines. \cite{wang2006} combined SOM and backpropagation neural networks for material classification. \cite{berger2018} used a Generative Adversarial Network (GAN) framework to compute models, addressing both TF specification and viewer position. Later, \cite{hong2019} combined GAN with Convolutional Neural Networks (CNN) to synthesize the exploration process. \cite{kim2021} developed an approach that utilizes CNN for generating visualizations from TF colorization. More recently, \cite{pan2024} introduced a design galleries approach employing deep learning and differentiable rendering to assist users in exploring the design space.
+
+\cite{sharma2020} developed a graph-based approach to identify significant volume structures, involving clustering features, constructing a material graph topology, and enhancing important structure rendering.
