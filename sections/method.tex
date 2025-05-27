@@ -1,84 +1,21 @@
 \section{Method}
 \label{sect:method}
-In this section, we describe an unsupervised method for TF definition and design. Our method generates a semi-automated material classification and an initial TF specification. These elements are still combined to produce a simplified design interface and an intuitive volume exploration space. 
+In this section, we describe an unsupervised method for TF design. Our method generates a semi-automated material classification and an initial TF specification. These elements are still combined to produce a simplified design interface and an intuitive volume exploration space. 
 
-Fig.~\ref{fig:volume-exploration-pipeline} shows an overview of the proposed method. In a pre-processing step, the dataset is organized into a regular volume grid. Given that the input data is unlabeled, all techniques are applied from an unsupervised perspective. If multivariate data is not available, derived attribute extraction must be executed. The remainder of the method comprises the following steps: feature selection, feature extraction, clustering, and pivot-based indexing.
+Fig.~\ref{fig:volume-exploration-pipeline} shows an overview of the proposed method. In a pre-processing step, the dataset is organized into a regular volume grid. Given that the input data is unlabeled, all techniques are applied from an unsupervised perspective. 
 
 \begin{figure*}[htb!]
     \centering
     \caption{Overview of the proposed unsupervised method for transfer function definition and design.}
     \label{fig:volume-exploration-pipeline}
-%    \includesvg[width=\textwidth]{figs/method-overview.svg}
+    \includegraphics[width=\textwidth]{figs/method-overview.png}
 \end{figure*}
 
 
-\subsection{Feature selection}
-\label{subsect:feature-selection}
 
-The first objective of our method is to facilitate the definition of the TF, or, in other words, to facilitate the selection of input data attributes.
-
-Finding an appropriate multidimensional TF for a dataset is mainly a trial-and-error process. This task is typically supported solely by the user's knowledge.
-
-Our method generates score rankings based on similarity measures between attributes. The user can thus make an assisted decision about the input attributes. Instead of manually examining all the combinations, the user can select the best attributes presented in one of the rankings. We claim that feature-similarity information can make the process more efficient and intuitive. Here, it is assumed that given a set of data attributes $\mathbb{A}$ with $|\mathbb{A}| = d$, the feature selection process results in the choice of $k$ attributes $\in \mathbb{A}$, where $k <= d$.
-
-Algorithm~\ref{alg:attribute-similarity-ranking} presents the technique used for the score rankings. The algorithm iteratively chooses the most dissimilar unselected attribute in comparison to those already selected. This task is performed until there are no remaining unselected attributes. The algorithm has the time complexity $\mathcal{O} (d^2n)$, where $d$ is the dimension (number of attributes) and $n$ is the number of voxels.
-
-\begin{algorithm}
-    \caption{Attribute score ranking.}
-    \label{alg:attribute-similarity-ranking}
-    \KwIn{set of attributes $\mathbb{A}$}
-    \KwOut{list of selected attributes $R$}
-    \Repeat{$\mathbb{A}$ is empty}{
-        $min \gets \infty$\\
-        $a_{selected} \gets $ first $a \in \mathbb{A}$\\
-        \ForEach{$r \in R$}{
-            $min_{ra} \gets$ similarity-function($r$, $a$)\\
-            \If{$min_{ra} < min$}{
-                $min \gets min_{ra}$\\
-                $a_{selected} \gets a$
-            }
-        }
-        Append $a_{selected}$ to $R$ \\
-        Remove $a_{selected}$ from $\mathbb{A}$\\
-    }
-\end{algorithm}
-
-We employ the measures described by \cite{mitra2002} as similarity functions in Algorithm~\ref{alg:attribute-similarity-ranking}, which are correlation coefficient, least squares regression error, and maximal information compression index (MICI).
-
-The correlation coefficient measure is calculated as described in Equation~\ref{eq-correlation}.
-\begin{equation}
-    \rho(x, y) = \frac{\text{cov}(x, y)}{\sqrt{\text{var}(x)\text{var}(y)}},
-    \label{eq-correlation}
-\end{equation}
-where $\rho$ is the correlation coefficient score, \text{var(~)} denotes the variance of a random variable, and \text{cov(~)} is the covariance between two random variables $x$ and $y$.
-
-Equation~\ref{eq-least-square} defines the least squares regression error measure.
-\begin{equation}
-    e(x, y) = \text{var}(y)(1-\rho(x,y))^2,
-    \label{eq-least-square}
-\end{equation}
-where $e$ is the least squares regression error score, \text{var(~)} denotes the variance of a random variable, and $\rho$ is the correlation coefficient (Equation~\ref{eq-correlation}).
-
-MICI measure is defined in Equation~\ref{eq-mici}.
-\begin{multline}
-    2\lambda_2(x, y) = (\text{var}(x) + \text{var}(y)) \\
-    - \sqrt{(\text{var}(x)\allowbreak \text{var}(y))^2 - 4\text{var}(x)\text{var}(y)(1-\rho(x, y)^2},
-    \label{eq-mici}
-\end{multline}
-where $\lambda_2$ is the maximal information compression index score,  \text{var(~)} denotes the variance of a random variable, and $\rho$ is the correlation coefficient (Equation~\ref{eq-correlation}).
-
-Three rankings of attributes (correlation coefficient, least squares regression error, and MICI) are calculated for feature selection. Because of the lack of labeled data and the focus on user visual analysis, feature selection remains challenging in TF definition. We propose a heuristic outlined as follows:
-\begin{itemize}
-    \item Set the number of $k$ selected attributes based on the number of $d$ available attributes, where $k \approx \sqrt{d}$.
-    \item Analyze the classification quality using the ranking based on the MICI, followed by the rankings based on the correlation coefficient and the least squares regression error.
-    \item If satisfactory results are not achieved, continue the search for TF, updating $k$ iteratively to $k+1$ and $k-1$.
-\end{itemize}
-
-It is important to note that the strategy does not automate attribute selection. Instead, it empowers the user by providing resources for conducting the selection process. The user retains full responsibility for selecting the best attributes. Furthermore, our approach does not impose limitations on feature selection. Users have the freedom to make arbitrary choices based on their specific needs and preferences.
-
-\subsection{Feature extraction}
+\subsection{Dimensionality Reduction}
 \label{subsect:feature-extraction}
-Our method performs a second dimensionality reduction step that serves two primary purposes. Firstly, it structures a 2D interface for the TF design and the volume exploration space. Secondly, it prepares the data for the clustering step, which requires 2D input.
+The first step of our method is a dimensionality reduction. It serves two primary purposes. Firstly, it structures a 2D interface for the TF design and the volume exploration space. Secondly, it prepares the data for the clustering step, which requires 2D input.
 
 We employed a feature extraction technique in this step. Besides the dimensionality reduction, it minimizes information loss once the feature selection step removes irrelevant and redundant attributes.
 

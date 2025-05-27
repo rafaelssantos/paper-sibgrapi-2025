@@ -1,20 +1,26 @@
 \section{Introduction}
 \label{sect:introduction}
-Direct Volume Rendering (DVR) is a powerful technology employed in computer science for visualizing three-dimensional scalar data grids, particularly in scientific and medical applications~\cite{elvins1992, xu2021}. The transfer function (TF) is a central component of the DVR pipeline and the object of study in this work. A TF translates volume data (such as density) to visual properties (such as color and opacity) displayed in rendered images~\cite{ljung2016}.
 
-When users interact with a DVR system, they often adjust TF parameters to reveal specific regions of interest within a dataset. A TF is a function in the ``mathematical senses'' whose input consists of a set of volume data attributes. The accuracy of classification is directly influenced by the data domain. Various studies~\cite{ljung2016, cai2017, pfister2001, roettger2005} have already demonstrated that utilizing multidimensional TFs can significantly enhance discriminative power. Despite this, it is crucial to recognize that merely increasing the number of input attributes does not guarantee better classification results. There is no one-size-fits-all TF for each dataset. Consequently, this is usually left to the user's knowledge of the data domain~\cite{arens2010}.
+Direct Volume Rendering (DVR) is a powerful technique employed in computer science for visualizing three-dimensional scalar data grids, particularly in scientific and medical applications~\cite{elvins1992, xu2021}. The transfer function (TF) is a central component of the DVR pipeline and the primary focus of this work. A TF maps volume data (such as density) to visual properties (such as color and opacity) in the rendered images~\cite{ljung2016}.
 
-Even after defining the TF, adjusting parameters remains essential to highlighting desired volume details. The design process is non-intuitive in one-dimensional space~\cite{pfister2001, wang2011}, and this complexity further intensifies in higher-dimensional cases. Material classification benefits from higher-dimensional data, but it is difficult to specify TFs in such spaces~\cite{ljung2016, pfister2001, kniss2002, pan2024}.  
+When interacting with a DVR system, users often adjust TF parameters to reveal specific regions of interest within the dataset. A TF is a function in the mathematical sense, whose input consists of a set of volume data attributes. The accuracy of the resulting classification is directly influenced by the chosen data domain. Several studies~\cite{ljung2016, cai2017, pfister2001, roettger2005} have demonstrated that utilizing multidimensional TFs can significantly enhance discriminative power. However, it is crucial to recognize that simply increasing the number of input attributes does not guarantee improved classification. There is no universal TF suitable for all datasets; consequently, TF design is usually left to the user's expertise and knowledge of the data domain~\cite{arens2010}.
 
-We propose a method that addresses the challenges of finding an appropriate TF for a given dataset and of assisting users in the design process. Our method adopts an unsupervised-based perspective that integrates feature selection, feature extraction, clustering, and pivot-based indexing. We also introduce an exploration scheme where users navigate over a set of volume details, which are semi-automatically classified and mapped to a modified 2D scatter plot view. Our major contributions can be summarized as follows:
+Even after defining the data domain, adjusting TF parameters remains essential to highlighting desired volume details. TF design is inherently non-intuitive in one-dimensional spaces~\cite{pfister2001, wang2011}, and this complexity intensifies in higher-dimensional scenarios. While material classification benefits from higher-dimensional data, specifying TFs in such spaces is notoriously difficult~\cite{ljung2016, pfister2001, kniss2002, pan2024}.  
+
+We propose a low-computational-cost method that simplifies TF design, regardless of the dimensionality of the data domain. Our approach adopts an unsupervised-learning perspective, integrating clustering, dimensionality reduction, and pivot-based indexing. We also introduce an exploration scheme wherein users navigate through a set of volume details that are semi-automatically classified and mapped onto a modified 2D scatter plot view.
+
+
+Our major contributions can be summarized as follows:
+
 \begin{itemize}
-    \item A feature selection strategy for the definition of multidimensional TF. Our method generates attribute rankings to furnish the user with information to select the most appropriate input data attributes.
-    \item An effective and low-computational-cost TF design approach. We employ a semi-automated material classification to generate TF that requires minimal effort to adjust parameters.
-    \item An easy-to-use volume exploration scheme. We provide an intuitive scatter plot view space for navigating over the classified data.
+    \item An effective and low-computational-cost TF design approach. We employ semi-automated material classification to generate TFs that require minimal parameter adjustment.
+    \item An intuitive volume exploration scheme. We provide a user-friendly scatter plot view for navigating the classified data.
 \end{itemize}
 
-\subsection{Definition of Concepts}
-In this paper, the term ``feature selection'' specifically refers to the group of dimensionality reduction (DR) techniques. Although some works in DVR use the term ``feature'' to denote regions or structures of interest within a dataset, we avoid this terminology here.
+\subsection{Definition of concepts}
 
-\subsection{Paper Organization}
-The rest of this paper is organized as follows. Section~\ref{sect:related-works} presents the related works. Section~\ref{sect:method} describes the proposed method. The volume exploration scheme and the TF design interface are detailed in Section~\ref{sect:volume-exploration-space}. Section~\ref{sect:results} presents the results. The discussion of the results is provided in Section~\ref{sect:discussion}. Finally, the paper is concluded in Section~\ref{sect:conclusions}.
+In this paper, the term ``feature selection'' specifically refers to the group of dimensionality reduction (DR) techniques. Although some DVR-related works use the term ``feature'' to denote regions or structures of interest within a dataset, we avoid this terminology here to prevent ambiguity.
+
+\subsection{Paper organization}
+
+The remainder of this paper is organized as follows. Section~\ref{sect:related-works} reviews related work. Section~\ref{sect:method} describes the proposed method. The volume exploration scheme and the TF design interface are detailed in Section~\ref{sect:volume-exploration-space}. Section~\ref{sect:results} presents the results, followed by their discussion in Section~\ref{sect:discussion}. Finally, the paper concludes in Section~\ref{sect:conclusions}.
