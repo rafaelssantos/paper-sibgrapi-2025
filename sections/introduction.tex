@@ -1,26 +1,19 @@
 \section{Introduction}
 \label{sect:introduction}
 
-Direct Volume Rendering (DVR) is a powerful technique employed in computer science for visualizing three-dimensional scalar data grids, particularly in scientific and medical applications~\cite{elvins1992, xu2021}. The transfer function (TF) is a central component of the DVR pipeline and the primary focus of this work. A TF maps volume data (such as density) to visual properties (such as color and opacity) in the rendered images~\cite{ljung2016}.
+Direct Volume Rendering (DVR) is a powerful technique used in computer science to visualize three-dimensional scalar data grids, particularly in scientific and medical applications~\cite{elvins1992, xu2021}. A central component of the DVR pipeline—and the primary focus of this work—is the transfer function (TF), which maps volume data (e.g., density) to visual properties such as color and opacity~\cite{ljung2016}.
 
-When interacting with a DVR system, users often adjust TF parameters to reveal specific regions of interest within the dataset. A TF is a function in the mathematical sense, whose input consists of a set of volume data attributes. The accuracy of the resulting classification is directly influenced by the chosen data domain. Several studies~\cite{ljung2016, cai2017, pfister2001, roettger2005} have demonstrated that utilizing multidimensional TFs can significantly enhance discriminative power. However, it is crucial to recognize that simply increasing the number of input attributes does not guarantee improved classification. There is no universal TF suitable for all datasets; consequently, TF design is usually left to the user's expertise and knowledge of the data domain~\cite{arens2010}.
+When interacting with a DVR system, users often adjust TF parameters to reveal specific regions of interest within the dataset. A TF is a mathematical function whose input consists of volume data attributes. The accuracy of the resulting classification is directly influenced by the chosen data domain. Several studies~\cite{ljung2016, cai2017, pfister2001, roettger2005} have demonstrated that multidimensional TFs can significantly enhance discriminative power. However, simply increasing the number of input attributes does not necessarily lead to better classification. Since no universal TF suits all datasets, TF design is typically left to the user's expertise and understanding of the data domain~\cite{arens2010}.
 
-Even after defining the data domain, adjusting TF parameters remains essential to highlighting desired volume details. TF design is inherently non-intuitive in one-dimensional spaces~\cite{pfister2001, wang2011}, and this complexity intensifies in higher-dimensional scenarios. While material classification benefits from higher-dimensional data, specifying TFs in such spaces is notoriously difficult~\cite{ljung2016, pfister2001, kniss2002, pan2024}.  
+Even after defining the data domain, adjusting TF parameters remains essential to highlight desired volume features. TF design is inherently non-intuitive in one-dimensional spaces~\cite{pfister2001, wang2011}, and this complexity increases in higher-dimensional settings. While material classification benefits from additional dimensions, specifying TFs in such spaces is notoriously difficult~\cite{ljung2016, pfister2001, kniss2002, pan2024}.
 
-We propose a low-computational-cost method that simplifies TF design, regardless of the dimensionality of the data domain. Our approach adopts an unsupervised-learning perspective, integrating clustering, dimensionality reduction, and pivot-based indexing. We also introduce an exploration scheme wherein users navigate through a set of volume details that are semi-automatically classified and mapped onto a modified 2D scatter plot view.
+We propose a low-computational-cost method that simplifies TF design, regardless of the dimensionality of the data domain. Our approach follows an unsupervised learning perspective, integrating clustering, dimensionality reduction, and pivot-based indexing. We also introduce an exploration scheme that enables users to navigate a set of volume features that are semi-automatically classified and mapped onto a modified 2D scatter plot view.
 
-
-Our major contributions can be summarized as follows:
+Our main contributions are as follows:
 
 \begin{itemize}
-    \item An effective and low-computational-cost TF design approach. We employ semi-automated material classification to generate TFs that require minimal parameter adjustment.
-    \item An intuitive volume exploration scheme. We provide a user-friendly scatter plot view for navigating the classified data.
+    \item A low-cost and effective TF design approach. We leverage semi-automated material classification to generate TFs that require minimal parameter adjustment.
+    \item An intuitive volume exploration scheme. We provide a user-friendly scatter plot interface for navigating the classified data.
 \end{itemize}
 
-\subsection{Definition of concepts}
-
-In this paper, the term ``feature selection'' specifically refers to the group of dimensionality reduction (DR) techniques. Although some DVR-related works use the term ``feature'' to denote regions or structures of interest within a dataset, we avoid this terminology here to prevent ambiguity.
-
-\subsection{Paper organization}
-
-The remainder of this paper is organized as follows. Section~\ref{sect:related-works} reviews related work. Section~\ref{sect:method} describes the proposed method. The volume exploration scheme and the TF design interface are detailed in Section~\ref{sect:volume-exploration-space}. Section~\ref{sect:results} presents the results, followed by their discussion in Section~\ref{sect:discussion}. Finally, the paper concludes in Section~\ref{sect:conclusions}.
+The remainder of this paper is organized as follows. Section~\ref{sect:related-works} reviews related work. Section~\ref{sect:method} describes the proposed method. Section~\ref{sect:volume-exploration-space} details the volume exploration scheme and TF design interface. Section~\ref{sect:results} presents the results, followed by a discussion in Section~\ref{sect:discussion}. Finally, Section~\ref{sect:conclusions} concludes the paper.
