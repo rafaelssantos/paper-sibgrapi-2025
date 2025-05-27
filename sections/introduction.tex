@@ -1,19 +1,17 @@
 \section{Introduction}
 \label{sect:introduction}
 
-Direct Volume Rendering (DVR) is a powerful technique used in computer science to visualize three-dimensional scalar data grids, particularly in scientific and medical applications~\cite{elvins1992, xu2021}. A central component of the DVR pipeline—and the primary focus of this work—is the transfer function (TF), which maps volume data (e.g., density) to visual properties such as color and opacity~\cite{ljung2016}.
+Direct Volume Rendering (DVR) is widely used in scientific and medical applications to visualize three-dimensional scalar data. A key element in DVR is the transfer function (TF), which maps volume data attributes (e.g., density) to visual properties such as color and opacity~\cite{ljung2016}.
 
-When interacting with a DVR system, users often adjust TF parameters to reveal specific regions of interest within the dataset. A TF is a mathematical function whose input consists of volume data attributes. The accuracy of the resulting classification is directly influenced by the chosen data domain. Several studies~\cite{ljung2016, cai2017, pfister2001, roettger2005} have demonstrated that multidimensional TFs can significantly enhance discriminative power. However, simply increasing the number of input attributes does not necessarily lead to better classification. Since no universal TF suits all datasets, TF design is typically left to the user's expertise and understanding of the data domain~\cite{arens2010}.
+Multidimensional TFs can enhance data classification, but their design becomes increasingly complex with more input attributes~\cite{ljung2016, pan2024}. Since no universal TF fits all datasets, design is often manual and highly dependent on user expertise~\cite{arens2010}. Dimensionality and non-intuitive parameter spaces further complicate the process.
 
-Even after defining the data domain, adjusting TF parameters remains essential to highlight desired volume features. TF design is inherently non-intuitive in one-dimensional spaces~\cite{pfister2001, wang2011}, and this complexity increases in higher-dimensional settings. While material classification benefits from additional dimensions, specifying TFs in such spaces is notoriously difficult~\cite{ljung2016, pfister2001, kniss2002, pan2024}.
+We propose a low-cost, unsupervised approach to simplify TF design. Our method combines clustering, dimensionality reduction, and pivot-based indexing to support semi-automated classification. A modified 2D scatter plot interface facilitates intuitive exploration of volume features.
 
-We propose a low-computational-cost method that simplifies TF design, regardless of the dimensionality of the data domain. Our approach follows an unsupervised learning perspective, integrating clustering, dimensionality reduction, and pivot-based indexing. We also introduce an exploration scheme that enables users to navigate a set of volume features that are semi-automatically classified and mapped onto a modified 2D scatter plot view.
-
-Our main contributions are as follows:
+Our main contributions are:
 
 \begin{itemize}
-    \item A low-cost and effective TF design approach. We leverage semi-automated material classification to generate TFs that require minimal parameter adjustment.
-    \item An intuitive volume exploration scheme. We provide a user-friendly scatter plot interface for navigating the classified data.
+    \item A computationally efficient method for generating TFs with minimal manual adjustment.
+    \item A user-friendly exploration interface for interacting with classified volume data.
 \end{itemize}
 
-The remainder of this paper is organized as follows. Section~\ref{sect:related-works} reviews related work. Section~\ref{sect:method} describes the proposed method. Section~\ref{sect:volume-exploration-space} details the volume exploration scheme and TF design interface. Section~\ref{sect:results} presents the results, followed by a discussion in Section~\ref{sect:discussion}. Finally, Section~\ref{sect:conclusions} concludes the paper.
+The remainder of this paper is organized as follows: Section~\ref{sect:related-works} reviews related work; Section~\ref{sect:method} presents our method; Section~\ref{sect:volume-exploration-space} describes the exploration interface; results and discussion are given in Sections~\ref{sect:results} and~\ref{sect:discussion}; and Section~\ref{sect:conclusions} concludes the paper.

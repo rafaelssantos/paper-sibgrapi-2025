@@ -1,14 +1,8 @@
 \section{Discussion}
 \label{sect:discussion}
 
-The two-level dimensionality reduction strategy effectively addresses challenges inherent in TFs. The first level offers guidance for TF definition, departing from the conventional approach reliant solely on user domain knowledge. This departure represents a significant advancement in the field. The second level simplifies the design interface.
+The dimensionality reduction approach effectively addresses common challenges in transfer function design by simplifying the data representation. The choice of DBSCAN parameters strongly affects classification outcomes. The $minPts$ parameter can reliably use a default value of 4~\cite{ester1996}, given that FastMap reduces the data to a 2D space. However, the $\varepsilon$ parameter requires careful tuning: larger values produce fewer but larger clusters, while smaller values result in more numerous, smaller clusters.
 
-While the feature selection heuristic shows promise in all experiments, the task ultimately remains the user's responsibility, which is a major limitation of our work. Investigating other unsupervised feature selection stop criteria may yield proper results, but there is a lack of investigation of these approaches in the TF context, warranting separate consideration in future analyses.
+The SSS distance factor ($\alpha$) similarly influences clustering granularity, varying inversely with the number of pivots per cluster.
 
-The parameters of DBSCAN significantly influence data classification. The parameter $minPts$ can assume a default value, $minPts = 4$~\cite{ester1996} since FastMap projects the data in a 2D space. The parameter 
-$\varepsilon$ requires a fine-tune adjustment, but its behavior is stable. Higher values of $\varepsilon$ lead to fewer but larger clusters, while lower values increase the number of smaller clusters. 
-
-Similarly, the adjustment of the SSS distance factor ($\alpha$) follows the same behavior, with $\alpha$ being inversely proportional to the number of pivots within each cluster.
-
-
-The practical implementation of the method is supported by minimal computational overhead, indicating favorable scalability for large datasets in size aspect. Despite the computational expense of the feature selection step in higher-dimensional cases, the remaining method steps can handle it.
+Overall, the method incurs minimal computational overhead, demonstrating efficient performance and promising scalability for large volumetric datasets.
