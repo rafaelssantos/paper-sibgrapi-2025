@@ -5,13 +5,14 @@ Direct Volume Rendering (DVR) is widely used in scientific and medical applicati
 
 Multidimensional TFs can enhance data classification, but their design becomes increasingly complex with more input attributes~\cite{ljung2016, pan2024}. Since no universal TF fits all datasets, design is often manual and highly dependent on user expertise~\cite{arens2010}. Dimensionality and non-intuitive parameter spaces further complicate the process.
 
-We propose a low-cost, unsupervised approach to simplify TF design. Our method combines clustering, dimensionality reduction, and pivot-based indexing to support semi-automated classification. A modified 2D scatter plot interface facilitates intuitive exploration of volume features.
+We propose a low-cost, unsupervised TF design method. Our approach combines clustering, dimensionality reduction, and representative selection to support semi-automated TF definitions. A modified 2D scatter plot interface facilitates intuitive exploration of volume features of interest (FOI).
 
-Our main contributions are:
+Our method contributions are:
 
 \begin{itemize}
-    \item A computationally efficient method for generating TFs with minimal manual adjustment.
-    \item A user-friendly exploration interface for interacting with classified volume data.
+    \item A computationally efficient method for TF design.
+    \item An initial semi-automated TF definition.
+    \item A simplified exploration interface based on classified volume FOIs.
 \end{itemize}
 
-The remainder of this paper is organized as follows: Section~\ref{sect:related-works} reviews related work; Section~\ref{sect:method} presents our method; Section~\ref{sect:volume-exploration-space} describes the exploration interface; results and discussion are given in Sections~\ref{sect:results} and~\ref{sect:discussion}; and Section~\ref{sect:conclusions} concludes the paper.
+The remainder of this paper is organized as follows: Section~\ref{sect:related-works} reviews related work. Section~\ref{sect:method} presents our method. Section~\ref{sect:volume-exploration} describes the TF design interface. Results and discussion are given in Sections~\ref{sect:results} and~\ref{sect:discussion}. Finally, Section~\ref{sect:conclusions} concludes the paper.
