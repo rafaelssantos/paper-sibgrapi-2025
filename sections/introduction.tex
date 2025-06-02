@@ -1,18 +1,16 @@
 \section{Introduction}
 \label{sect:introduction}
 
-Direct Volume Rendering (DVR) is widely used in scientific and medical applications to visualize three-dimensional scalar data. A key element in DVR is the transfer function (TF), which maps volume data attributes (e.g., density) to visual properties such as color and opacity~\cite{ljung2016}.
+Direct Volume Rendering (DVR) is widely used in scientific and medical applications to visualize 3D scalar data. A key element in DVR is the transfer function (TF), which maps volume data attributes (e.g., density) to visual properties such as color and opacity~\cite{ljung2016}.
 
-Multidimensional TFs can enhance data classification, but their design becomes increasingly complex with more input attributes~\cite{ljung2016, pan2024}. Since no universal TF fits all datasets, design is often manual and highly dependent on user expertise~\cite{arens2010}. Dimensionality and non-intuitive parameter spaces further complicate the process.
+Multidimensional TFs can enhance data classification, but their design becomes increasingly complex as more input attributes are considered~\cite{ljung2016, pan2024}. Since no universal TF fits all datasets, the design process is often manual and highly dependent on user expertise~\cite{arens2010}. The high dimensionality and non-intuitive parameter spaces further complicate this task.
 
-We propose a low-cost, unsupervised TF design method. Our approach combines clustering, dimensionality reduction, and representative selection to support semi-automated TF definitions. A modified 2D scatter plot interface facilitates intuitive exploration of volume features of interest (FOI).
-
-Our method contributions are:
+We propose a computationally efficient TF design method that combines clustering, dimensionality reduction and representative selection. Our approach provides:
 
 \begin{itemize}
-    \item A computationally efficient method for TF design.
-    \item An initial semi-automated TF definition.
-    \item A simplified exploration interface based on classified volume FOIs.
+    \item A simplified TF design interface with an initially generated TF definition.
+    \item A semi-automated identification of features of interest (FOIs) based on volume data.
+    \item An interactive exploration interface based on classified volume FOIs.
 \end{itemize}
 
-The remainder of this paper is organized as follows: Section~\ref{sect:related-works} reviews related work. Section~\ref{sect:method} presents our method. Section~\ref{sect:volume-exploration} describes the TF design interface. Results and discussion are given in Sections~\ref{sect:results} and~\ref{sect:discussion}. Finally, Section~\ref{sect:conclusions} concludes the paper.
+The remainder of this paper is organized as follows: Section~\ref{sect:related-works} reviews related work. Section~\ref{sect:method} presents our method. Section~\ref{sect:volume-exploration} describes the TF design interface. Results and discussion are provided in Sections~\ref{sect:results} and~\ref{sect:discussion}. Finally, Section~\ref{sect:conclusions} concludes the paper.

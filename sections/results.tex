@@ -1,20 +1,16 @@
 \section{Results}
 \label{sect:results}
 
-\subsection{Experimental Design}
+\subsection{Experimental design}
 \label{subsect:experimental-design}
 
-Experiments ran on a computer with the following specs: Intel Core i5-7200U, 8 GB RAM, Ubuntu 22.04 64-bit, with an NVIDIA GeForce GT 940MX GPU.
+Experiments were conducted on a computer with the following specifications: Intel Core i5-7200U, 8 GB RAM, Ubuntu 22.04 64-bit, and an NVIDIA GeForce GT 940MX GPU.
 
-We used classical volume ray-casting with Blinn-Phong illumination and trilinear interpolation. Ray step adjusted per voxel spacing. Runtimes are averages of five trials.
+We used classical volume ray-casting with Blinn-Phong illumination and trilinear interpolation. The ray step was adjusted according to voxel spacing. Runtimes reported are averages of five trials.
 
 The system was implemented in C++ using Qt and CUDA C/C++. The implementation is publicly available.
 
-Table~\ref{tab:datasets-descriptions} lists the volume datasets used in experiments.
-
-All volumes contain scalar density values. Multidimensional attributes were derived—13 in total—including intensity, gradient magnitude, Laplacian magnitude, and 10 local histogram statistics (absolute deviation, contrast, energy, entropy, inertia, kurtosis, mean, skewness, standard deviation, variance).
-
-Attribute selection was empirical, tailored per dataset to balance discrimination and computational cost.
+Table~\ref{tab:datasets-descriptions} lists the volume datasets used in the experiments.
 
 \begin{table}[htb!]
     \centering
@@ -27,14 +23,109 @@ Attribute selection was empirical, tailored per dataset to balance discriminatio
         Knees & $379 \times 229 \times 305$ & 26,471,255\\
         Tooth & $256 \times 256 \times 161$ & 10,551,296\\
         \bottomrule
-        \label{tab:datasets-descriptions}
     \end{tabular}
+    \label{tab:datasets-descriptions}
 \end{table}
+
+
+\subsection{Volume eploration}
+\label{subsect:volume-exploration}
+
+All datasets originally contain only scalar density (intensity) values as their primary attribute. From the original data, 12 additional multidimensional attributes were systematically derived to enrich the feature space, including gradient magnitude, Laplacian magnitude, and 10 local histogram statistics (absolute deviation, contrast, energy, entropy, inertia, kurtosis, mean, skewness, standard deviation, and variance).
+
+For each dataset, a specific subset of \(k\) attributes was empirically selected through iterative experimentation and visual assessment to compose the transfer function (TF). These selected groups of attributes aimed to balance the discrimination power of volume structures with computational efficiency. Notably, the attribute selection process varied between datasets, with distinct groups of \(k\) attributes chosen for each case.
+
+DBSCAN's $minPts$ parameter was fixed at 4~\cite{ester1996}. The parameter $\varepsilon$ varied within the range $[0.2, 0.35]$, and the SSS parameter $\alpha$ was varied within $[0.8, 0.95]$ for volume exploration.
+
+\subsubsection{Engine block dataset}
+\label{subsubsec:engine-block}
+
+Figure~\ref{fig:engine-block-clusters-tf} shows the volume exploration space for the engine block dataset. For this dataset, a set of \(k = 4\) attributes was selected: \{intensity, skewness, gradient magnitude and variance\}. Each numbered group corresponds to classified volume features of interest in Fig.~\ref{fig:engine-block-clusters}. Method parameters: $minPts=4$, $\varepsilon=0.35$ and $\alpha=0.85$.
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=0.7\columnwidth]{figs/engine-block-clusters-tf.jpg}
+    \caption{Volume exploration space for the engine block dataset. Selected attributes: \{intensity, skewness, gradient magnitude and variance\} (\(k=4\)). Method parameters: $minPts=4$; $\varepsilon=0.35$ and $\alpha=0.85$.}
+    \label{fig:engine-block-clusters-tf}
+\end{figure}
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=\columnwidth]{figs/engine-block-clusters.jpg}
+    \caption{Rendered classified volume features of interest for the engine block dataset.}
+    \label{fig:engine-block-clusters}
+\end{figure}
+
+Figure~\ref{fig:engine-block-groups} shows a volume exploration simulation revealing engine components, based on the selected attribute subset.
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=\columnwidth]{figs/engine-block-groups.jpg}
+    \caption{User-refined transfer function definition and volume features of interest for block dataset.}
+    \label{fig:engine-block-groups}
+\end{figure}
+
+\subsubsection{Knees dataset}
+\label{subsubsect:knees-dataset}
+
+For the knees dataset, a set of \(k = 5\) attributes was selected: \{intensity, variance, absolute deviation, energy and contrast\}. Preliminary classification is shown in Fig.~\ref{fig:knees-tf-clusters}, with rendered details in Fig.~\ref{fig:knees-clusters}. Method parameters: $minPts=4$, $\varepsilon=0.35$ and $\alpha=0.9$.
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=0.7\columnwidth]{figs/knees-clusters-tf.jpg} 
+    \caption{Volume exploration space for the knees dataset. Selected attributes: \{intensity, variance, absolute deviation, energy, contrast\} (\(k=5\)). Method parameters: $minPts=4$, $\varepsilon=0.35$ and $\alpha=0.9$.}
+    \label{fig:knees-tf-clusters}
+\end{figure}
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=\columnwidth]{figs/knees-clusters.jpg} 
+    \caption{Rendered classified volume features of interest for the knees dataset.}
+    \label{fig:knees-clusters}
+\end{figure}
+
+Figure~\ref{fig:knees-groups} illustrates the empirically grouped bones and muscles: femur, tibia, patella, fibula, thigh and knee muscles.
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=\columnwidth]{figs/knees-groups.jpg}
+    \caption{User-refined transfer function definition and volume features of interest for knees dataset.}
+    \label{fig:knees-groups}
+\end{figure}
+
+\subsubsection{Tooth dataset}
+\label{subsubsect:tooth-dataset}
+
+For the tooth dataset, a set of \(k = 6\) attributes was selected: \{intensity, variance, absolute deviation, energy, contrast and entropy\}. Figure~\ref{fig:tooth-clusters-tf} shows the volume exploration space, with rendered details in Fig.~\ref{fig:tooth-clusters}. Method parameters: $minPts=4$, $\varepsilon=0.23$ and $\alpha=0.9$.
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=0.7\columnwidth]{figs/tooth-clusters-tf.jpg} 
+    \caption{Volume exploration space for the tooth dataset. Selected attributes: \{intensity, variance, absolute deviation, energy, contrast and entropy\} (\(k=6\)). Method parameters: $minPts=4$; $\varepsilon=0.23$; $\alpha=0.9$.}
+    \label{fig:tooth-clusters-tf}
+\end{figure}
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=\columnwidth]{figs/tooth-clusters.jpg} 
+    \caption{Rendered classified volume features of interest for the tooth dataset.}
+    \label{fig:tooth-clusters}
+\end{figure}
+
+Figure~\ref{fig:tooth-groups} shows empirically grouped tooth structures: enamel, pulp, dentin, crown, entire tooth and immersion fluid.
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=\columnwidth]{figs/tooth-groups.jpg}
+    \caption{User-refined transfer function definition and volume features of interest for tooth dataset.}
+    \label{fig:tooth-groups}
+\end{figure}
+
 
 \subsection{Runtime}
 \label{subsect:runtime-analysis}
 
-Table~\ref{tab:runtime-analysis} presents runtimes (seconds) for each dataset.
+Table~\ref{tab:runtime-analysis} presents the runtimes (in seconds) for each dataset.
 
 \begin{table}[!htbp]
 \caption{Runtime (seconds) of the proposed method per dataset.}
@@ -42,104 +133,25 @@ Table~\ref{tab:runtime-analysis} presents runtimes (seconds) for each dataset.
 \centering
     \begin{tabular}{@{}>{\centering\arraybackslash}m{0.4\columnwidth}>{\centering\arraybackslash}m{0.15\columnwidth}>{\centering\arraybackslash}m{0.15\columnwidth}>{\centering\arraybackslash}m{0.15\columnwidth}@{}}
         \toprule
-            & \textbf{Engine block} & \textbf{Knees} & \textbf{Tooth}\\
+            & \textbf{Engine block} & \textbf{Knees} & \textbf{Tooth} \\
         \midrule
         \textbf{Dimensionality reduction} & 7.50 & 7.98 & 36.05 \\
         \textbf{Clustering} & 51.52 & 102.77 & 19.42 \\
-        \textbf{Pivot-based indexing} & 2.23 & 3.15 & 1.33 \\
+        \textbf{Representative selection} & 2.23 & 3.15 & 1.33 \\
         \midrule
-        \textbf{Volume exploration space} & 1.48 & 1.86 & 0.79 \\
+        \textbf{Transfer function design interface} & 1.48 & 1.86 & 0.79 \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-\subsection{Data classification}
-\label{subsect:material-classification}
+It can be observed that dimensionality reduction and clustering are the most time-consuming steps of the method. Dimensionality reduction time depends on both dataset size and data dimensionality. In contrast, clustering, representative selection, and transfer function design interface construction operate on a 2D space, making their runtimes primarily dependent on dataset size (i.e., the number of voxels), regardless of input data dimensionality.
 
-Attribute selection was done empirically by iterative testing and visual assessment, ensuring effective separation of volumetric structures while maintaining computational feasibility.
+Overall, the method incurs minimal time overhead, demonstrating efficient performance and promising scalability for large volume datasets.
 
-DBSCAN's $minPts$ was fixed at 4~\cite{ester1996}. Parameter $\varepsilon$ varied within $[0.2, 0.35]$, and SSS parameter $\alpha$ within $[0.8, 0.95]$ for volume exploration.
+\subsection{Parameter choice}
+\label{subsect:parameter-choice}
 
-\subsubsection{Engine block dataset}
-\label{subsubsec:engine-block}
+The choice of DBSCAN parameters strongly affects classification outcomes. The $minPts$ parameter can reliably use a default value of 4~\cite{ester1996}, given that FastMap reduces the data to a 2D space. However, the $\varepsilon$ parameter requires careful tuning: larger values produce fewer but larger clusters, while smaller values result in more numerous, smaller clusters.
 
-Figure~\ref{fig:engine-block-clusters-tf} shows the volume exploration space for the engine block. Each numbered group corresponds to classified volume details in Fig.~\ref{fig:engine-block-clusters}. Parameters: $k=4$, TF = \{intensity, skewness, gradient magnitude, variance\}; $minPts=4$; $\varepsilon=0.35$; $\alpha=0.85$.
+The SSS distance factor ($\alpha$) similarly influences clustering granularity, varying inversely with the number of pivots selected per cluster.
 
-\begin{figure}[htb!]
-    \centering
-    \includegraphics[width=0.7\columnwidth]{figs/engine-block-clusters-tf.jpg}
-    \caption{Volume exploration space for engine block dataset. Parameters: TF = \{intensity, skewness, gradient magnitude, variance\}; $minPts=4$; $\varepsilon=0.35$; $\alpha=0.85$.}
-    \label{fig:engine-block-clusters-tf}
-\end{figure}
-
-\begin{figure}[htb!]
-    \centering
-    \includegraphics[width=\columnwidth]{figs/engine-block-clusters.jpg}
-    \caption{Rendered classified volume details for engine block. Parameters as in Fig.~\ref{fig:engine-block-clusters-tf}.}
-    \label{fig:engine-block-clusters}
-\end{figure}
-
-Figure~\ref{fig:engine-block-groups} shows a volume exploration simulation revealing engine components, starting from Fig.~\ref{fig:engine-block-clusters-tf}.
-
-\begin{figure}[htb!]
-    \centering
-    \includegraphics[width=\columnwidth]{figs/engine-block-groups.jpg}
-    \caption{User-refined transfer function and volume classification for engine block. Groups formed empirically. Parameters as in Fig.~\ref{fig:engine-block-clusters-tf}.}
-    \label{fig:engine-block-groups}
-\end{figure}
-
-\subsubsection{Knees dataset}
-\label{subsubsect:knees-dataset}
-
-Preliminary classification is shown in Fig.~\ref{fig:knees-tf-clusters} with rendered details in Fig.~\ref{fig:knees-clusters}. Parameters: TF = \{intensity, variance, absolute deviation, energy, contrast\}; $minPts=4$; $\varepsilon=0.35$; $\alpha=0.9$.
-
-\begin{figure}[htb!]
-    \centering
-    \includegraphics[width=0.7\columnwidth]{figs/knees-clusters-tf.jpg} 
-    \caption{Volume exploration space for knees dataset. Parameters as above.}
-    \label{fig:knees-tf-clusters}
-\end{figure}
-
-\begin{figure}[htb!]
-    \centering
-    \includegraphics[width=\columnwidth]{figs/knees-clusters.jpg} 
-    \caption{Rendered classified volume details for knees dataset. Parameters as above.}
-    \label{fig:knees-clusters}
-\end{figure}
-
-Figure~\ref{fig:knees-groups} illustrates grouped bones and muscles: femur, tibia, patella, fibula, thigh and knee muscles.
-
-\begin{figure}[htb!]
-    \centering
-    \includegraphics[width=\columnwidth]{figs/knees-groups.jpg}
-    \caption{User-refined TF and classification for knees dataset. Groups formed empirically. Parameters as above.}
-    \label{fig:knees-groups}
-\end{figure}
-
-\subsubsection{Tooth dataset}
-\label{subsubsect:tooth-dataset}
-
-Figure~\ref{fig:tooth-clusters} shows the volume exploration space, with rendered details in Fig.~\ref{fig:tooth-clusters}. Parameters: TF = \{intensity, variance, absolute deviation, energy, contrast, entropy\}; $minPts=4$; $\varepsilon=0.23$; $\alpha=0.9$.
-
-\begin{figure}[htb!]
-    \centering
-    \includegraphics[width=0.7\columnwidth]{figs/tooth-clusters-tf.jpg} 
-    \caption{Volume exploration space for tooth dataset. Parameters as above.}
-    \label{fig:tooth-clusters}
-\end{figure}
-
-\begin{figure}[htb!]
-    \centering
-    \includegraphics[width=\columnwidth]{figs/tooth-clusters.jpg} 
-    \caption{Rendered classified volume details for tooth dataset. Parameters as above.}
-    \label{fig:tooth-clusters}
-\end{figure}
-
-Figure~\ref{fig:tooth-groups} shows empirically grouped tooth structures: enamel, pulp, dentin, crown, entire tooth, and immersion fluid.
-
-\begin{figure}[htb!]
-    \centering
-    \includegraphics[width=\columnwidth]{figs/tooth-groups.jpg}
-    \caption{User-refined TF and classification for tooth dataset. Groups formed empirically. Parameters as above.}
-    \label{fig:tooth-groups}
-\end{figure}

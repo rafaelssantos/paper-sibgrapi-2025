@@ -1,7 +1,7 @@
 \section{Discussion}
 \label{sect:discussion}
 
-The dimensionality reduction approach effectively addresses common challenges in transfer function design by simplifying the data representation. The choice of DBSCAN parameters strongly affects classification outcomes. The $minPts$ parameter can reliably use a default value of 4~\cite{ester1996}, given that FastMap reduces the data to a 2D space. However, the $\varepsilon$ parameter requires careful tuning: larger values produce fewer but larger clusters, while smaller values result in more numerous, smaller clusters.
+The dimensionality reduction approach effectively addresses common challenges in TF design by simplifying the data representation. The choice of DBSCAN parameters strongly affects classification outcomes. The $minPts$ parameter can reliably use a default value of 4~\cite{ester1996}, given that FastMap reduces the data to a 2D space. However, the $\varepsilon$ parameter requires careful tuning: larger values produce fewer but larger clusters, while smaller values result in more numerous, smaller clusters.
 
 The SSS distance factor ($\alpha$) similarly influences clustering granularity, varying inversely with the number of pivots per cluster.
 
