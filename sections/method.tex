@@ -1,9 +1,9 @@
 \section{Method}
 \label{sect:method}
 
-This section presents our unsupervised method for TF design, enabling semi-automated material classification and initial TF specification for intuitive volume exploration.
+This section presents our unsupervised method for transfer function (TF) design, enabling semi-automated material classification and initial TF specification to support intuitive volume exploration.
 
-Fig.~\ref{fig:volume-exploration-pipeline} shows an overview. After organizing the dataset into a volume grid, we apply three steps: dimensionality reduction, clustering, and pivot-based indexing.
+An overview is shown in Fig.~\ref{fig:volume-exploration-pipeline}. After organizing the multidimensional data into a volume grid, our method comprises three main steps: dimensionality reduction, clustering, and representative selection.
 
 \begin{figure*}[htb!]
     \centering
@@ -12,21 +12,24 @@ Fig.~\ref{fig:volume-exploration-pipeline} shows an overview. After organizing t
     \includegraphics[width=\textwidth]{figs/method-overview.jpg}
 \end{figure*}
 
-\subsection{Dimensionality Reduction}
+\subsection{Dimensionality reduction}
 \label{subsect:feature-extraction}
 
-We use FastMap~\cite{faloutsos1995} to project high-dimensional data into 2D while preserving clustering structure. The algorithm finds two distant pivots and projects points onto the line between them.
+Dimensionality reduction is a critical step for two reasons. First, the clustering technique employed requires a two-dimensional input space for proper functioning (see Section~\ref{subsect:clustering}). Second, our TF design interface is two-dimensional (see Section~\ref{sect:volume-exploration}).
 
-Let $d$ be the number of attributes and $n$ the number of voxels. The steps are:
+We adopt FastMap~\cite{faloutsos1995} to project high-dimensional voxel data into 2D while preserving data similarity. FastMap operates by selecting two distant pivots and projecting all points onto the line defined by these pivots, recursively reducing the dimensionality.
+
+Let $d$ be the number of attributes and $n$ the number of voxels. The algorithm proceeds as follows:
+
 \begin{enumerate}
-    \item Find two points (pivots) furthest apart.
-    \item Project points onto a hyperplane orthogonal to the pivots’ line.
+    \item Select two points with maximal pairwise distance as the pivots.
+    \item Project all points onto a hyperplane orthogonal to the line defined by the pivots.
 \end{enumerate}
 
-To avoid quadratic complexity, we use the heuristic from~\cite{faloutsos1995} (Algorithm~\ref{alg:pivot-searching-of-fastmap}) which approximates distant pivots.
+To mitigate the computational cost of pivot selection, \cite{faloutsos1995} proposed the approach summarized in Algorithm~\ref{alg:pivot-searching-of-fastmap}.
 
 \begin{algorithm}
-    \caption{Pivot searching of FastMap.}
+    \caption{Pivot searching in FastMap.}
     \label{alg:pivot-searching-of-fastmap}
     \KwIn{$\mathbb{O}$}
     \KwOut{Pivots $O_a$, $O_b$}
@@ -35,55 +38,26 @@ To avoid quadratic complexity, we use the heuristic from~\cite{faloutsos1995} (A
     $O_a \gets$ point $o \in \mathbb{O}$ farthest from $O_b$
 \end{algorithm}
 
-Time complexity is $\mathcal{O}(nk)$ with $k=2$.
-
 \subsection{Clustering}
 \label{subsect:clustering}
-A major goal of our method is to simplify material classification and facilitate the highlighting of volume details. We address this objective by employing a classical density-based clustering algorithm, the DBSCAN~\cite{ester1996}. 
 
-DBSCAN is a widely utilized algorithm known for its success across various applications~\cite{schubert2017}. Nevertheless, its adoption in DVR comes with some caveats.  The original version~\cite{ester1996} exhibits a time complexity of $\mathcal{O} (n^2)$ in the worst case~\cite{schubert2017}. With practical usability in mind, we implemented a grid-based  DBSCAN proposed by \cite{gunawan2013}. This version claims a time complexity of $\mathcal{O} (n \log (n))$. 
+To simplify material classification and enhance the detection of relevant volume structures, we employ the classical density-based clustering technique DBSCAN~\cite{ester1996}.
 
-Like the original algorithm~\cite{ester1996}, the 2D grid version also has $minPts$ and $\varepsilon$ as input parameters. In this way, the user must fine-tune such parameters to best classify the volume data. 
+DBSCAN is widely recognized for its effectiveness in identifying clusters of arbitrary shapes without requiring prior knowledge of the number of clusters~\cite{schubert2017}. However, its standard implementation has a worst-case time complexity of $\mathcal{O}(n^2)$~\cite{schubert2017}. To ensure practical scalability, we adopt an optimized grid-based variant~\cite{gunawan2013}, which reduces the time complexity to $\mathcal{O}(n \log n)$.
 
-When this method step ends, each cluster comprises a subset of voxels that potentially represent a region of interest.
+As in the original algorithm, two parameters must be tuned by the user: $minPts$, the minimum number of points to form a dense region, and $\varepsilon$, the neighborhood radius.
 
-\cite{gunawan2013} introduces the concept of a grid to improve the efficiency of the clustering process, especially for high-dimensional datasets. The authors improve the scalability and efficiency of traditional DBSCAN by leveraging grid-based partitioning and density estimation techniques. Detailed explanations are provided in the works of \cite{gunawan2013} and \cite{gan2015}. The algorithm operates on a cell grid and comprises the tasks summarized next.
+At the end of this step, each cluster contains a subset of voxels potentially representing distinct features of interest (FOI) within the volume.
 
-\begin{enumerate}
-    \item Grid partitioning. The first step involves partitioning the space into a grid of cells. Each cell represents a small portion of the entire space.
+\subsection{Representative selection}
+\label{subsect:representative-selection}
 
-    \item Density estimation. Within each cell, the algorithm calculates the density of points. The density is usually estimated using a distance threshold ($\varepsilon$) to determine the neighborhood of each point.
+The voxels classified by DBSCAN could be directly projected onto the TF design interface. However, to reduce clutter in the scatter plot and improve interpretability, we apply a representative selection technique within each cluster.
 
-    \item Identifying core points. Points with a density above a certain threshold ($minPts$) are considered core points. These core points are potential seeds for clusters.
-
-    \item Expanding clusters. Starting from a core point, the algorithm expands the cluster by iteratively adding neighboring points that also qualify as core points. The expansion continues until there are no more core points to be added.
-
-    \item Handling border points. Points that are within the $\varepsilon$ neighborhood of a core point but do not meet the density requirement to be considered core themselves are classified as border points. Border points are assigned to the cluster of their nearest core point.
-
-    \item Handling noise. The points that are not core and do not belong to any cluster are considered noise points.
-\end{enumerate}
-
-\subsection{Pivot-based indexing}
-\label{subsect:pivot-based-indexing}
-
-To reduce scatter plot clutter, we plot only selected pivots within each cluster. Each cluster is subdivided into sub-clusters by assigning points to their nearest pivot (Algorithm~\ref{alg:subclustering-finding}).
+First, representative pivots are selected using Sparse Spatial Selection (SSS)~\cite{pedreira2007}. This technique iteratively adds points as pivots if they are sufficiently distant from all previously selected pivots, controlled by a distance factor $\alpha$ (Algorithm~\ref{alg:sss}).
 
 \begin{algorithm}
-    \caption{Finding sub-clusters within a cluster.}
-    \label{alg:subclustering-finding}
-    \KwIn{Points $\mathbb{P}$ of cluster $c$}
-    \KwIn{Pivots $\mathbb{P}_s$ of cluster $c$}
-    \KwOut{Points with sub-cluster assignment}
-    \ForEach{$p \in \mathbb{P}$}{
-        $p_s \gets$ nearest pivot in $\mathbb{P}_s$ \\
-        Assign $p$ to $p_s$'s sub-cluster
-    }
-\end{algorithm}
-
-We select pivots using Sparse Spatial Selection (SSS)~\cite{pedreira2007}, which adds points as pivots if they are sufficiently distant from existing ones, controlled by a distance factor $\alpha$.
-
-\begin{algorithm}
-    \caption{Sparse Spatial Selection.}
+    \caption{Sparse Spatial Selection (SSS).}
     \label{alg:sss}
     \KwIn{Points $\mathbb{P}$}
     \KwOut{Selected pivots $\mathbb{P}_s$}
@@ -95,5 +69,18 @@ We select pivots using Sparse Spatial Selection (SSS)~\cite{pedreira2007}, which
     }
 \end{algorithm}
 
-Adjusting $\alpha$ controls the number of pivots: smaller $\alpha$ selects more pivots; values near $1$ select fewer.
+Next, each cluster is subdivided into sub-clusters by assigning every point to its nearest pivot (Algorithm~\ref{alg:subclustering-finding}). This step refines the initial data classification and acts as a second-level clustering, improving the granularity of the FOI representation.
 
+\begin{algorithm}
+    \caption{Sub-cluster assignment within a cluster.}
+    \label{alg:subclustering-finding}
+    \KwIn{Points $\mathbb{P}$ of cluster $c$}
+    \KwIn{Pivots $\mathbb{P}_s$ of cluster $c$}
+    \KwOut{Points with sub-cluster assignments}
+    \ForEach{$p \in \mathbb{P}$}{
+        $p_s \gets$ nearest pivot in $\mathbb{P}_s$ \\
+        Assign $p$ to $p_s$'s sub-cluster
+    }
+\end{algorithm}
+
+The parameter $\alpha$ controls the number of selected pivots: smaller values lead to more pivots and finer sub-clustering, while values closer to $1$ yield fewer, broader sub-clusters.
