@@ -39,10 +39,29 @@ Time complexity is $\mathcal{O}(nk)$ with $k=2$.
 
 \subsection{Clustering}
 \label{subsect:clustering}
+A major goal of our method is to simplify material classification and facilitate the highlighting of volume details. We address this objective by employing a classical density-based clustering algorithm, the DBSCAN~\cite{ester1996}. 
 
-To simplify classification and highlight details, we use DBSCAN~\cite{ester1996}. Since the original has worst-case $\mathcal{O}(n^2)$ complexity, we adopt a grid-based variant~\cite{gunawan2013} with $\mathcal{O}(n \log n)$ complexity.
+DBSCAN is a widely utilized algorithm known for its success across various applications~\cite{schubert2017}. Nevertheless, its adoption in DVR comes with some caveats.  The original version~\cite{ester1996} exhibits a time complexity of $\mathcal{O} (n^2)$ in the worst case~\cite{schubert2017}. With practical usability in mind, we implemented a grid-based  DBSCAN proposed by \cite{gunawan2013}. This version claims a time complexity of $\mathcal{O} (n \log (n))$. 
 
-Parameters $minPts$ and $\varepsilon$ must be tuned by the user. The algorithm partitions space into a grid, estimates density, identifies core points, expands clusters, assigns border points, and labels noise.
+Like the original algorithm~\cite{ester1996}, the 2D grid version also has $minPts$ and $\varepsilon$ as input parameters. In this way, the user must fine-tune such parameters to best classify the volume data. 
+
+When this method step ends, each cluster comprises a subset of voxels that potentially represent a region of interest.
+
+\cite{gunawan2013} introduces the concept of a grid to improve the efficiency of the clustering process, especially for high-dimensional datasets. The authors improve the scalability and efficiency of traditional DBSCAN by leveraging grid-based partitioning and density estimation techniques. Detailed explanations are provided in the works of \cite{gunawan2013} and \cite{gan2015}. The algorithm operates on a cell grid and comprises the tasks summarized next.
+
+\begin{enumerate}
+    \item Grid partitioning. The first step involves partitioning the space into a grid of cells. Each cell represents a small portion of the entire space.
+
+    \item Density estimation. Within each cell, the algorithm calculates the density of points. The density is usually estimated using a distance threshold ($\varepsilon$) to determine the neighborhood of each point.
+
+    \item Identifying core points. Points with a density above a certain threshold ($minPts$) are considered core points. These core points are potential seeds for clusters.
+
+    \item Expanding clusters. Starting from a core point, the algorithm expands the cluster by iteratively adding neighboring points that also qualify as core points. The expansion continues until there are no more core points to be added.
+
+    \item Handling border points. Points that are within the $\varepsilon$ neighborhood of a core point but do not meet the density requirement to be considered core themselves are classified as border points. Border points are assigned to the cluster of their nearest core point.
+
+    \item Handling noise. The points that are not core and do not belong to any cluster are considered noise points.
+\end{enumerate}
 
 \subsection{Pivot-based indexing}
 \label{subsect:pivot-based-indexing}
