@@ -3,7 +3,10 @@
 
 This section presents our unsupervised method for transfer function (TF) design, enabling semi-automated material classification and initial TF specification to support intuitive volume exploration.
 
-An overview is shown in Fig.~\ref{fig:volume-exploration-pipeline}. After organizing the multidimensional data into a volume grid, our method comprises three main steps: dimensionality reduction, clustering, and representative selection.
+An overview is shown in Fig.~\ref{fig:volume-exploration-pipeline}. After organizing the multidimensional data into a volume grid, our method comprises three main steps: dimensionality reduction, clustering and representative selection. 
+
+The techniques used at each step were carefully chosen based on their time complexity, ensuring a balance between computational efficiency and effectiveness for handling large volume datasets. This design choice supports practical scalability and responsiveness, which are critical for interactive volume exploration.
+
 
 \begin{figure*}[htb!]
     \centering
