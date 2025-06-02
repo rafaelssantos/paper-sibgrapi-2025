@@ -40,19 +40,19 @@ DBSCAN's $minPts$ parameter was fixed at 4~\cite{ester1996}. The parameter $\var
 \subsubsection{Engine block dataset}
 \label{subsubsec:engine-block}
 
-Figure~\ref{fig:engine-block-clusters-tf} shows the volume exploration space for the engine block dataset. For this dataset, a set of \(k = 4\) attributes was selected: \{intensity, skewness, gradient magnitude and variance\}. Each numbered group corresponds to classified volume features of interest in Fig.~\ref{fig:engine-block-clusters}. Method parameters: $minPts=4$, $\varepsilon=0.35$ and $\alpha=0.85$.
+Figure~\ref{fig:engine-block-clusters-tf} shows the volume exploration space for the engine block dataset. For this dataset, a set of \(k = 4\) attributes was selected: \{intensity, skewness, gradient magnitude and variance\}. Each numbered group corresponds to a volume feature in Fig.~\ref{fig:engine-block-clusters}. Method parameters: $minPts=4$, $\varepsilon=0.35$ and $\alpha=0.85$.
 
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.7\columnwidth]{figs/engine-block-clusters-tf.jpg}
-    \caption{Volume exploration space for the engine block dataset. Selected attributes: \{intensity, skewness, gradient magnitude and variance\} (\(k=4\)). Method parameters: $minPts=4$; $\varepsilon=0.35$ and $\alpha=0.85$.}
+    \caption{Initial transfer function definition and volume features for the engine block dataset. Selected attributes: \{intensity, skewness, gradient magnitude and variance\} (\(k=4\)). Method parameters: $minPts=4$; $\varepsilon=0.35$ and $\alpha=0.85$.}
     \label{fig:engine-block-clusters-tf}
 \end{figure}
 
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=\columnwidth]{figs/engine-block-clusters.jpg}
-    \caption{Rendered classified volume features of interest for the engine block dataset.}
+    \caption{Rendered volume features for the engine block dataset.}
     \label{fig:engine-block-clusters}
 \end{figure}
 
@@ -73,14 +73,14 @@ For the knees dataset, a set of \(k = 5\) attributes was selected: \{intensity, 
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.7\columnwidth]{figs/knees-clusters-tf.jpg} 
-    \caption{Volume exploration space for the knees dataset. Selected attributes: \{intensity, variance, absolute deviation, energy, contrast\} (\(k=5\)). Method parameters: $minPts=4$, $\varepsilon=0.35$ and $\alpha=0.9$.}
+    \caption{Initial transfer function definition and volume features for the knees dataset. Selected attributes: \{intensity, variance, absolute deviation, energy, contrast\} (\(k=5\)). Method parameters: $minPts=4$, $\varepsilon=0.35$ and $\alpha=0.9$.}
     \label{fig:knees-tf-clusters}
 \end{figure}
 
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=\columnwidth]{figs/knees-clusters.jpg} 
-    \caption{Rendered classified volume features of interest for the knees dataset.}
+    \caption{Rendered volume features for the knees dataset.}
     \label{fig:knees-clusters}
 \end{figure}
 
@@ -101,14 +101,14 @@ For the tooth dataset, a set of \(k = 6\) attributes was selected: \{intensity, 
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.7\columnwidth]{figs/tooth-clusters-tf.jpg} 
-    \caption{Volume exploration space for the tooth dataset. Selected attributes: \{intensity, variance, absolute deviation, energy, contrast and entropy\} (\(k=6\)). Method parameters: $minPts=4$; $\varepsilon=0.23$; $\alpha=0.9$.}
+    \caption{Initial transfer function definition and volume features for the tooth dataset. Selected attributes: \{intensity, variance, absolute deviation, energy, contrast and entropy\} (\(k=6\)). Method parameters: $minPts=4$; $\varepsilon=0.23$; $\alpha=0.9$.}
     \label{fig:tooth-clusters-tf}
 \end{figure}
 
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=\columnwidth]{figs/tooth-clusters.jpg} 
-    \caption{Rendered classified volume features of interest for the tooth dataset.}
+    \caption{Rendered volume features for the tooth dataset.}
     \label{fig:tooth-clusters}
 \end{figure}
 
