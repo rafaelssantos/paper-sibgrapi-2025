@@ -45,6 +45,7 @@
 % *** CITATION PACKAGES ***
 %
 \usepackage{cite}
+\usepackage[numbers]{natbib}
 % cite.sty was written by Donald Arseneau
 % V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
 % \cite{} output to follow that of the IEEE. Loading the cite package will
@@ -256,8 +257,6 @@
 % Basically, \url{my_url_here}.
 
 
-
-
 % *** Do not adjust lengths that control margins, column widths, etc. ***
 % *** Do not use packages that alter fonts (such as pslatex).         ***
 % There should be no need to do such things with IEEEtran.cls V1.6 and later.
@@ -394,7 +393,8 @@ Transfer functions (TFs) are a fundamental component of volume visualization and
 % http://mirror.ctan.org/biblio/bibtex/contrib/doc/
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
-\bibliographystyle{IEEEtran}
+
+\bibliographystyle{IEEEtranN}
 % argument is your BibTeX string definitions and bibliography database(s)
 \bibliography{refs}
 %
