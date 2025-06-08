@@ -8,8 +8,6 @@ Experiments were conducted on a computer with the following specifications: Inte
 
 We used classical volume ray-casting with Blinn-Phong illumination and trilinear interpolation. The ray step was adjusted according to voxel spacing. Runtimes reported are averages of five trials.
 
-The system was implemented in C++ using Qt and CUDA C/C++. The implementation is publicly available.
-
 Table~\ref{tab:datasets-descriptions} lists the volume datasets used in the experiments.
 
 \begin{table}[htb!]
@@ -33,9 +31,10 @@ Table~\ref{tab:datasets-descriptions} lists the volume datasets used in the expe
 
 All datasets originally contain only scalar density (intensity) values as their primary attribute. From the original data, 12 additional multidimensional attributes were systematically derived to enrich the feature space, including gradient magnitude, Laplacian magnitude, and 10 local histogram statistics (absolute deviation, contrast, energy, entropy, inertia, kurtosis, mean, skewness, standard deviation, and variance).
 
-For each dataset, a specific subset of \(k\) attributes was empirically selected through iterative experimentation and visual assessment to compose the transfer function (TF). These selected groups of attributes aimed to balance the discrimination power of volume structures with computational efficiency. Notably, the attribute selection process varied between datasets, with distinct groups of \(k\) attributes chosen for each case.
+For each dataset, a specific subset of \(k\) attributes was empirically selected through iterative experimentation and visual assessment to compose the TF. These selected groups of attributes aimed to balance the discrimination power of volume structures with computational efficiency. Notably, the attribute selection process varied between datasets, with distinct groups of \(k\) attributes chosen for each case.
 
-DBSCAN's $minPts$ parameter was fixed at 4~\cite{ester1996}. The parameter $\varepsilon$ varied within the range $[0.2, 0.35]$, and the SSS parameter $\alpha$ was varied within $[0.8, 0.95]$ for volume exploration.
+The DBSCAN parameter $minPts$ was fixed at 4~\cite{ester1996}. The parameter $\varepsilon$ varied within the range $[0.2, 0.35]$, and the SSS parameter $\alpha$ was varied within $[0.8, 0.95]$ for volume exploration.
+
 
 \subsubsection{Engine block dataset}
 \label{subsubsec:engine-block}
@@ -44,7 +43,7 @@ Figure~\ref{fig:engine-block-clusters-tf} shows the volume exploration space for
 
 \begin{figure}[htb!]
     \centering
-    \includegraphics[width=0.7\columnwidth]{figs/engine-block-clusters-tf.jpg}
+    \includegraphics[width=0.6\columnwidth]{figs/engine-block-clusters-tf.jpg}
     \caption{Initial transfer function definition and volume features for the engine block dataset. Selected attributes: \{intensity, skewness, gradient magnitude and variance\} (\(k=4\)). Method parameters: $minPts=4$; $\varepsilon=0.35$ and $\alpha=0.85$.}
     \label{fig:engine-block-clusters-tf}
 \end{figure}
@@ -116,7 +115,7 @@ Figure~\ref{fig:tooth-groups} shows empirically grouped tooth structures: enamel
 
 \begin{figure}[htb!]
     \centering
-    \includegraphics[width=\columnwidth]{figs/tooth-groups.jpg}
+    \includegraphics[width=0.8\columnwidth]{figs/tooth-groups.jpg}
     \caption{User-refined transfer function definition and volume features of interest for tooth dataset.}
     \label{fig:tooth-groups}
 \end{figure}
@@ -144,7 +143,8 @@ Table~\ref{tab:runtime-analysis} presents the runtimes (in seconds) for each dat
     \end{tabular}
 \end{table}
 
-It can be observed that dimensionality reduction and clustering are the most time-consuming steps of the method. Dimensionality reduction time depends on both dataset size and data dimensionality. In contrast, clustering, representative selection, and transfer function design interface construction operate on a 2D space, making their runtimes primarily dependent on dataset size (i.e., the number of voxels), regardless of input data dimensionality.
+Dimensionality reduction and clustering are the most time-consuming steps. The reduction time depends on dataset size and dimensionality, while clustering, representative selection, and TF interface construction operate in 2D and depend mainly on the number of voxels.
+
 
 Overall, the method incurs minimal time overhead, demonstrating efficient performance and promising scalability for large volume datasets.
 
